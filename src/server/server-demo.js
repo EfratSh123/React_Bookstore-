@@ -5,32 +5,70 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/src/server/bookList',(req,res)=>{
-    res.send(booksList)
+// Use the imported booksList as our working array
+let books = [...booksList]; // Create a copy so we can modify it
+
+// GET endpoint - return current books array
+app.get('/src/server/bookList', (req, res) => {
+    res.send(books)
 })
-app.post('src/server/bookList',(req,res)=>{
-    let newBook={...req.body}
-    //בדיקה האם הערכים ריקים, אם כן- להחזיר שגיאה
-    // if(!newBook.name || !newBook.author || !newBook.category || !newBook.amount ||
-    //  !newBook.publicationDate || !newBook.price || !newBook.discount || !newBook.rating || !newBook.numRating)
-    // {
-    //     res.status(400).send('missing values');
-    //     return;
-    // }
+
+// POST endpoint - add new book (fixed the route path)
+app.post('/src/server/bookList', (req, res) => {
+    let newBook = {...req.body}
+    
+    // Basic validation (uncomment if needed)
+    if(!newBook.name || !newBook.author || !newBook.category || 
+       newBook.amount === undefined || !newBook.publicationDate || 
+       !newBook.price || newBook.discount === undefined) {
+        res.status(400).send('missing values');
+        return;
+    }
+    
+    // Add the new book to our books array
     books.push(newBook);
+    console.log('New book added:', newBook.name);
+    console.log('Total books:', books.length);
+    
     res.send(newBook);
 })
-app.delete('src/server/bookList/:id',(req,res)=>{
-    let id = req.params.id;
-    let index = books.findIndex(book=>book.id == id);
-    if(index == -1)
-    {
+
+// PUT endpoint - update existing book (for ratings, inventory, etc.)
+app.put('/src/server/bookList/:name', (req, res) => {
+    const bookName = req.params.name;
+    const updates = req.body;
+    
+    let bookIndex = books.findIndex(book => book.name === bookName);
+    if(bookIndex === -1) {
         res.status(404).send('book not found');
         return;
     }
-    books.splice(index,1);
-    res.send('book deleted');
+    
+    // Update the book with new data
+    books[bookIndex] = { ...books[bookIndex], ...updates };
+    console.log('Book updated:', bookName);
+    
+    res.send(books[bookIndex]);
 })
-app.listen(3000,()=>{
-    console.log('server is listening on port ',3000)
+
+// DELETE endpoint - delete book (fixed variable name from 'id' to work with name)
+app.delete('/src/server/bookList/:name', (req, res) => {
+    const bookName = req.params.name;
+    let index = books.findIndex(book => book.name === bookName);
+    
+    if(index === -1) {
+        res.status(404).send('book not found');
+        return;
+    }
+    
+    const deletedBook = books[index];
+    books.splice(index, 1);
+    console.log('Book deleted:', deletedBook.name);
+    
+    res.send({ message: 'book deleted', deletedBook });
+})
+
+app.listen(3000, () => {
+    console.log('Server is listening on port 3000')
+    console.log('Initial books loaded:', books.length)
 })

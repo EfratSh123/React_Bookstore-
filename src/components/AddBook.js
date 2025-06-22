@@ -16,6 +16,7 @@ function AddBook(props) {
 
   // Error state management - stores validation errors for each field
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Generic input change handler - updates form data and clears errors
   const handleInputChange = (field, value) => {
@@ -55,9 +56,11 @@ function AddBook(props) {
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
-  // Handle form submission
-  const handleSubmit = () => {
+  // Handle form submission - NOW SENDS TO SERVER
+  const handleSubmit = async () => {
     if (!validateForm()) return; // Stop if validation fails
+
+    setIsSubmitting(true);
 
     // Create new book object with proper data types
     const newBook = {
@@ -72,22 +75,48 @@ function AddBook(props) {
       numRating: 0 // Initialize rating count
     };
 
-    // Add book to the books list
-    props.SetBooks(prevBooks => [...prevBooks, newBook]);
-    
-    // Reset form to initial state
-    setFormData({
-      name: '',
-      author: '',
-      amount: '',
-      publicationDate: '',
-      price: '',
-      discount: '',
-      category: 'adults'
-    });
-    
-    // Close the form
-    props.onClose();
+    try {
+      // Send POST request to server
+      const response = await fetch('http://localhost:3000/src/server/bookList', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBook)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add book to server');
+      }
+
+      const savedBook = await response.json();
+      console.log('Book saved to server:', savedBook);
+
+      // Add book to the client-side books list
+      props.SetBooks(prevBooks => [...prevBooks, savedBook]);
+      
+      // Reset form to initial state
+      setFormData({
+        name: '',
+        author: '',
+        amount: '',
+        publicationDate: '',
+        price: '',
+        discount: '',
+        category: 'adults'
+      });
+      
+      // Close the form
+      props.onClose();
+      
+      alert('Book added successfully!');
+      
+    } catch (error) {
+      console.error('Error adding book:', error);
+      alert('Failed to add book. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -109,9 +138,9 @@ function AddBook(props) {
             value={formData.name}
             onChange={(e) => handleInputChange('name', e.target.value)}
             className={errors.name ? 'error' : ''} // Add error class if validation fails
+            disabled={isSubmitting}
           />
           {errors.name && <span className="error-message">{errors.name}</span>}
-          
         </div>
 
         {/* Author input field */}
@@ -124,9 +153,9 @@ function AddBook(props) {
             value={formData.author}
             onChange={(e) => handleInputChange('author', e.target.value)}
             className={errors.author ? 'error' : ''}
+            disabled={isSubmitting}
           />
           {errors.author && <span className="error-message">{errors.author}</span>}
-          
         </div>
 
         {/* Two-column layout for amount and category */}
@@ -141,9 +170,9 @@ function AddBook(props) {
               value={formData.amount}
               onChange={(e) => handleInputChange('amount', e.target.value)}
               className={errors.amount ? 'error' : ''}
+              disabled={isSubmitting}
             />
             {errors.amount && <span className="error-message">{errors.amount}</span>}
-            
           </div>
 
           <div className="form-group">
@@ -152,6 +181,7 @@ function AddBook(props) {
               id="category"
               value={formData.category}
               onChange={(e) => handleInputChange('category', e.target.value)}
+              disabled={isSubmitting}
             >
               {/* Dropdown options for all available categories */}
               <option value="adults">Adults</option>
@@ -174,9 +204,9 @@ function AddBook(props) {
             value={formData.publicationDate}
             onChange={(e) => handleInputChange('publicationDate', e.target.value)}
             className={errors.publicationDate ? 'error' : ''}
+            disabled={isSubmitting}
           />
           {errors.publicationDate && <span className="error-message">{errors.publicationDate}</span>}
-          
         </div>
 
         {/* Two-column layout for price and discount */}
@@ -192,9 +222,9 @@ function AddBook(props) {
               value={formData.price}
               onChange={(e) => handleInputChange('price', e.target.value)}
               className={errors.price ? 'error' : ''}
+              disabled={isSubmitting}
             />
             {errors.price && <span className="error-message">{errors.price}</span>}
-            
           </div>
 
           <div className="form-group">
@@ -208,19 +238,27 @@ function AddBook(props) {
               value={formData.discount}
               onChange={(e) => handleInputChange('discount', e.target.value)}
               className={errors.discount ? 'error' : ''}
+              disabled={isSubmitting}
             />
             {errors.discount && <span className="error-message">{errors.discount}</span>}
-            
           </div>
         </div>
 
         {/* Form action buttons */}
         <div className="form-actions">
-          <button className="cancel-btn" onClick={props.onClose}>
+          <button 
+            className="cancel-btn" 
+            onClick={props.onClose}
+            disabled={isSubmitting}
+          >
             Cancel
           </button>
-          <button className="submit-btn" onClick={handleSubmit}>
-            Add Book
+          <button 
+            className="submit-btn" 
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Adding...' : 'Add Book'}
           </button>
         </div>
       </div>
