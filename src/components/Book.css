@@ -1,0 +1,416 @@
+/* Main book card container with modern styling */
+.book-card {
+  background: white;
+  border-radius: 20px; /* Large rounded corners for modern look */
+  padding: 1.5rem;
+  /* Subtle shadow for card elevation effect */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease; /* Smooth transitions for all hover effects */
+  border: 2px solid transparent; /* Invisible border that can be colored */
+  position: relative; /* For positioning pseudo-elements */
+  overflow: hidden; /* Hide overflow for clean edges */
+}
+
+/* Top colored bar that appears on hover - created with pseudo-element */
+.book-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px; /* Thin colored bar */
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease;
+}
+
+/* Hover effect - lift card and show colored top bar */
+.book-card:hover {
+  transform: translateY(-5px); /* Lift card up */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* Enhance shadow */
+}
+
+.book-card:hover::before {
+  opacity: 1; /* Show colored bar on hover */
+}
+
+/* Special styling for favorite books */
+.book-card.favorite {
+  border-color: #ff6b6b; /* Red border for favorites */
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); /* Subtle pink tint */
+}
+
+.book-card.favorite::before {
+  background: linear-gradient(90deg, #ff6b6b, #ee5a24); /* Red-orange gradient */
+  opacity: 1; /* Always show for favorites */
+}
+
+/* Dimmed styling for out of stock books */
+.book-card.out-of-stock {
+  opacity: 0.7; /* Make entire card semi-transparent */
+  background: #f8f9fa; /* Gray background */
+}
+
+/* Header section with title, author, and favorite button */
+.book-header {
+  display: flex;
+  justify-content: space-between; /* Title on left, button on right */
+  align-items: flex-start; /* Align to top */
+  margin-bottom: 1.5rem;
+}
+
+/* Container for title and author info */
+.book-title-section {
+  flex: 1; /* Take up remaining space */
+}
+
+/* Large, bold book title */
+.book-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50; /* Dark blue-gray */
+  margin-bottom: 0.5rem;
+  line-height: 1.3; /* Tight line spacing for titles */
+}
+
+/* Author name with lighter color */
+.book-author {
+  color: #7f8c8d; /* Medium gray */
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Heart-shaped favorite button */
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%; /* Circular button */
+  transition: all 0.3s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect for favorite button */
+.favorite-btn:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.1); /* Light red background */
+  transform: scale(1.1); /* Slightly enlarge */
+}
+
+/* Disabled state for out of stock books */
+.favorite-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Active state when book is favorited */
+.favorite-btn.active {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+/* Container for all book details */
+.book-details {
+  margin-bottom: 1.5rem;
+}
+
+/* Individual detail rows with consistent spacing */
+.detail-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem; /* Space between label and value */
+}
+
+/* Labels for book details */
+.detail-label {
+  font-weight: 600;
+  color: #34495e; /* Dark gray */
+  min-width: 80px; /* Consistent label width for alignment */
+  font-size: 0.9rem;
+}
+
+/* Container for category tags */
+.categories {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to multiple lines */
+  gap: 0.5rem;
+}
+
+/* Individual category tags with gradient background */
+.category-tag {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px; /* Pill-shaped tags */
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Stock amount display with conditional coloring */
+.stock-amount {
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+/* Green background for normal stock levels */
+.stock-amount:not(.out-of-stock):not(.low-stock) {
+  background: #d4edda; /* Light green */
+  color: #155724; /* Dark green text */
+}
+
+/* Yellow background for low stock warning */
+.stock-amount.low-stock {
+  background: #fff3cd; /* Light yellow */
+  color: #856404; /* Dark yellow text */
+}
+
+/* Red background for out of stock */
+.stock-amount.out-of-stock {
+  background: #f8d7da; /* Light red */
+  color: #721c24; /* Dark red text */
+}
+
+/* Price section with background highlight */
+.price-section {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f8f9fa; /* Light gray background */
+  border-radius: 12px;
+}
+
+/* Flexible layout for price information */
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* Crossed-out original price when there's a discount */
+.original-price {
+  text-decoration: line-through;
+  color: #6c757d; /* Gray color for crossed-out price */
+  font-size: 1rem;
+}
+
+/* Large, prominent pricing display */
+.discounted-price,
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+/* Red discount badge */
+.discount-badge {
+  background: #ff6b6b;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Rating section with background */
+.rating-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+/* Current rating display with stars and text */
+.current-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Container for star rating display */
+.stars {
+  display: flex;
+  gap: 0.25rem; /* Small space between stars */
+}
+
+/* Individual star styling */
+.star {
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+/* Interactive stars that can be clicked */
+.star.interactive {
+  cursor: pointer;
+}
+
+.star.interactive:hover {
+  transform: scale(1.2); /* Enlarge on hover */
+}
+
+/* Empty/unfilled stars */
+.star.empty {
+  opacity: 0.3; /* Make unfilled stars semi-transparent */
+}
+
+/* Rating text with review count */
+.rating-text {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Container for rating controls */
+.rating-controls {
+  border-top: 1px solid #e9ecef; /* Separator line */
+  padding-top: 1rem;
+}
+
+/* Button to start rating process */
+.rate-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rate-btn:hover {
+  transform: translateY(-1px); /* Slight lift on hover */
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Rating input interface */
+.rating-input {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Interactive star rating selection */
+.rating-stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Action buttons for rating submission */
+.rating-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Submit rating button */
+.rate-submit-btn {
+  background: #28a745; /* Green */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rate-submit-btn:hover {
+  background: #218838; /* Darker green */
+  transform: translateY(-1px);
+}
+
+/* Cancel rating button */
+.rate-cancel-btn {
+  background: #6c757d; /* Gray */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rate-cancel-btn:hover {
+  background: #5a6268; /* Darker gray */
+  transform: translateY(-1px);
+}
+
+/* Container for action buttons */
+.book-actions {
+  margin-top: 1.5rem;
+}
+
+/* Main call-to-action button */
+.add-to-cart-btn {
+  width: 100%; /* Full width button */
+  background: linear-gradient(135deg, #28a745, #20c997); /* Green gradient */
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for add to cart button */
+.add-to-cart-btn:hover:not(.disabled) {
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3); /* Green shadow */
+}
+
+/* Disabled state for out of stock */
+.add-to-cart-btn.disabled {
+  background: #6c757d; /* Gray background */
+  cursor: not-allowed;
+  transform: none; /* No hover effects */
+  box-shadow: none;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .book-card {
+    padding: 1rem; /* Less padding on mobile */
+  }
+  
+  .book-title {
+    font-size: 1.2rem; /* Smaller title on mobile */
+  }
+  
+  /* Stack detail rows vertically on mobile */
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .detail-label {
+    min-width: auto; /* Remove fixed width on mobile */
+  }
+  
+  /* Stack price information vertically */
+  .price-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  /* Stack rating display vertically */
+  .current-rating {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

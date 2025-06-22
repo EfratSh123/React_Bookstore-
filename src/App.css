@@ -1,0 +1,130 @@
+/* Reset all default browser styles for consistent appearance across browsers */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+/* Main body styling with modern gradient background */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  /* Create diagonal gradient from blue to purple for visual appeal */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh; /* Ensure full viewport height coverage */
+  color: #333;
+}
+
+/* Main app container with full height and padding */
+.app {
+  min-height: 100vh;
+  padding: 2rem; /* Add breathing room around content */
+}
+
+/* Header section styling with centered text */
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem; /* Space between header and content */
+  color: white; /* White text on gradient background */
+}
+
+/* Large, bold main title with shadow for readability */
+.app-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Shadow for text depth */
+}
+
+/* Subtitle with lighter weight and transparency */
+.app-header p {
+  font-size: 1.2rem;
+  opacity: 0.9; /* Slightly transparent for hierarchy */
+  font-weight: 300;
+}
+
+/* Container for all books with max width and centering */
+.books-container {
+  max-width: 1400px; /* Prevent content from being too wide on large screens */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+/* CSS Grid layout for responsive book cards */
+.books-grid {
+  display: grid;
+  /* Auto-fill creates as many columns as fit, each at least 350px wide */
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem; /* Space between grid items */
+  margin-bottom: 3rem;
+}
+
+/* Fixed positioning for add book button in bottom left */
+.add-book-section {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Styled floating action button with gradient and shadow */
+.add-book-trigger {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24); /* Red-orange gradient */
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px; /* Fully rounded pill shape */
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  /* Colored shadow that matches button color */
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease; /* Smooth animation for all properties */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between icon and text */
+}
+
+/* Hover effect with lift animation and enhanced shadow */
+.add-book-trigger:hover {
+  transform: translateY(-2px); /* Lift button up slightly */
+  box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4); /* Larger, more intense shadow */
+}
+
+/* Modal-style container for add book form */
+.add-book-container {
+  background: white;
+  border-radius: 20px; /* Large border radius for modern look */
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2); /* Large shadow for modal effect */
+  min-width: 400px;
+  max-height: 80vh; /* Prevent form from being too tall */
+  overflow-y: auto; /* Allow scrolling if content is too long */
+}
+
+/* Mobile responsive design - stacks elements vertically on small screens */
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem; /* Reduce padding on mobile */
+  }
+  
+  .app-header h1 {
+    font-size: 2rem; /* Smaller title on mobile */
+  }
+  
+  /* Single column layout on mobile */
+  .books-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem; /* Smaller gaps on mobile */
+  }
+  
+  /* Remove fixed positioning on mobile for better UX */
+  .add-book-section {
+    position: static;
+    margin-top: 2rem;
+  }
+  
+  /* Full width form on mobile */
+  .add-book-container {
+    min-width: auto;
+    width: 100%;
+  }
+}
