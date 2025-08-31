@@ -7,7 +7,7 @@ let books = [
     publicationDate: "2021-05-25",
     price: 80,
     discount: 30,
-    rating: 4,
+    rating: 16,
     numRating: 10
   },
   {
@@ -18,7 +18,7 @@ let books = [
     publicationDate: "2022-06-10",
     price: 67,
     discount: 20,
-    rating: 2,
+    rating: 20,
     numRating: 6
   },
   {
@@ -40,7 +40,7 @@ let books = [
     publicationDate: "2023-11-11",
     price: 55,
     discount: 0,
-    rating: 4,
+    rating: 50,
     numRating: 15
   },
   {
@@ -51,7 +51,7 @@ let books = [
     publicationDate: "2023-03-10",
     price: 75,
     discount: 10,
-    rating: 4.1,
+    rating: 40,
     numRating: 14
   },
   {
