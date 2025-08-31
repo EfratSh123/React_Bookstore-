@@ -77,7 +77,7 @@ function AddBook(props) {
 
     try {
       // Send POST request to server
-      const response = await fetch('http://localhost:3000/src/server/bookList', {
+      const response = await fetch('/api/bookList', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

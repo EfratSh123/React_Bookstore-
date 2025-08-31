@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() => {
     (async function() {
-      const res = await fetch('http://localhost:3000/src/server/bookList');
+      const res = await fetch('/api/bookList');
       const data = await res.json();
       setBooks(data);
     })()
